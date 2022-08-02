@@ -1,0 +1,40 @@
+module dff_tb;
+  reg d,clk,rst;
+  wire q,qb;
+  dff dff1(d,clk,rst,q,qb);
+  
+  always #5 clk = ~clk;
+  
+  initial 
+    begin
+      $dumpfile("dff_tb.vcd");
+      $dumpvars(1,dff_tb);
+      {clk,rst,d} <= 0;
+      #10 rst <= 1; d = 0;
+      #8 d=1;
+      #8 d=0;
+      #8 d=1;
+      #8 d=0;
+      #8 d=1;
+      #8 d=0;
+      #4 rst =0;
+      #8 d=1;
+      #8 d=0;
+      #2 
+      $finish;
+  end
+  
+endmodule
+
+// Code your design//
+module dff(d,clk,rst,q,qb);
+  input d,clk,rst;
+  output reg q;
+  output qb;
+  assign qb = ~q;
+  always @(negedge clk,rst)
+    if(rst)
+      q <= 0;
+  else
+    q <= d;
+endmodule
