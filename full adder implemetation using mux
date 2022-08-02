@@ -1,0 +1,42 @@
+// Code your testbench here
+// or browse Examples
+module comb_func_tb;
+wire t_f;
+ reg t_x, t_y, t_z;
+  comb_func my_gate(t_x,t_y,t_z,t_f);
+  initial begin $dumpfile("cf_tb.vcd");
+   $dumpvars(1,comb_func_tb);
+ $display ("the inputs and outputs are");
+    $monitor("x=%d, y=%d, z=%d, f=%d ",t_x, t_y, t_z, t_f);
+ t_x = 1'b0; t_y = 1'b0; t_z = 1'b0;
+ #5
+ t_x = 1'b0; t_y = 1'b1; t_z = 1'b1;
+ #5
+ t_x = 1'b0; t_y = 1'b1; t_z = 1'b0;
+ #5
+ t_x = 1'b0; t_y = 1'b1; t_z = 1'b1;
+ #5
+ t_x = 1'b1; t_y = 1'b0; t_z = 1'b0;
+ #5
+ t_x = 1'b1; t_y = 1'b0; t_z = 1'b1;
+ #5
+ t_x = 1'b1; t_y = 1'b1; t_z = 1'b0;
+ #5
+ t_x = 1'b1; t_y = 1'b1; t_z = 1'b1;
+ end
+endmodule
+
+// Code your design here
+module comb_func(input x,y,z,output f);
+  wire[1:0]s = {x,y};
+  wire[3:0]w;
+  assign w = {1'b1,1'b0,~z,z};
+  mux4 m1(s,w,f);
+endmodule
+
+module mux4(s,i,y);
+  input[1:0]s;
+  input[3:0]i;
+  output y;
+  assign y = (~s[1] & ~s[0] & i[0]) | (~s[1] & s[0] & i[1])|(s[1]&~s[0]&i[2])|(s[1]&s[0]&i[3]);
+endmodule
