@@ -25,3 +25,32 @@ wire t_f;
  t_x = 1'b1; t_y = 1'b1; t_z = 1'b1;
  end
 endmodule
+
+
+// Code your testbench here
+// or browse Examples
+module comb_func_tb;
+wire t_f;
+ reg t_x, t_y, t_z;
+  comb_func my_gate(t_x,t_y,t_z,t_f);
+  initial begin $dumpfile("cf_tb.vcd");
+   $dumpvars(1,comb_func_tb);
+ $display ("the inputs and outputs are");
+    $monitor("x=%d, y=%d, z=%d, f=%d ",t_x, t_y, t_z, t_f);
+ t_x = 1'b0; t_y = 1'b0; t_z = 1'b0;
+ #5
+ t_x = 1'b0; t_y = 1'b1; t_z = 1'b1;
+ #5
+ t_x = 1'b0; t_y = 1'b1; t_z = 1'b0;
+ #5
+ t_x = 1'b0; t_y = 1'b1; t_z = 1'b1;
+ #5
+ t_x = 1'b1; t_y = 1'b0; t_z = 1'b0;
+ #5
+ t_x = 1'b1; t_y = 1'b0; t_z = 1'b1;
+ #5
+ t_x = 1'b1; t_y = 1'b1; t_z = 1'b0;
+ #5
+ t_x = 1'b1; t_y = 1'b1; t_z = 1'b1;
+ end
+endmodule
