@@ -1,0 +1,59 @@
+// Code your testbench here
+// or browse Examples
+module sum_ex_tb;
+  wire sum,carry;
+  reg a,b,c;
+  sum_ex my_gate(a,b,c,sum,carry);
+  initial begin
+    $monitor("a=%b,b=%b,c=%b,sum=%b,carry=%b,",a,b,c,sum,carry);
+    a=1'b0; b=1'b0; c=1'b0;
+    #5 a=1'b0; b=1'b0; c=1'b1;
+    #5 a=1'b0; b=1'b1; c=1'b0;
+    #5 a=1'b0; b=1'b1; c=1'b1;
+    #5 a=1'b1; b=1'b0; c=1'b0;
+    #5 a=1'b1; b=1'b0; c=1'b1;
+    #5 a=1'b1; b=1'b1; c=1'b0;
+    #5 a=1'b1; b=1'b1; c=1'b1;
+  end 
+endmodule
+    
+    
+    // Code your design here
+module sum_ex(a,b,c,sum,carry);
+  input a,b,c;
+  output sum,carry;
+  udp_sum sum_ckt(sum,a,b,c);
+  udp_cy carry_ckt(carry,a,b,c);
+endmodule
+
+primitive udp_cy(cout,a,b,c);
+input a,b,c;
+output cout;
+table
+  //a b c cout
+  0 0 ? : 0;
+  0 ? 0 : 0;
+  ? 0 0 : 0;
+  1 1 ? : 1;
+  1 ? 1 : 1;
+  ? 1 1 : 1;
+endtable
+endprimitive
+
+primitive udp_sum(sum,a,b,c);
+input a,b,c;
+output sum;
+table
+  //a b c sum
+  0 0 0 : 0;
+  0 0 1 : 1;
+  0 1 0 : 1;
+  0 1 1 : 0;
+  1 0 0 : 1;
+  1 0 1 : 0;
+  1 1 0 : 0;
+  1 1 1 : 1;
+endtable
+endprimitive
+  
+  
