@@ -1,0 +1,47 @@
+//Test Bench//
+module tff_tb;
+  reg t,clk,rstn;
+  wire q,qb;
+  tff tff1(t,clk,rstn,q,qb);
+  
+  always #5 clk = ~clk;
+  
+  initial 
+    begin
+      $dumpfile("tff_tb.vcd");
+      $dumpvars(1,tff_tb);
+      {clk,rstn,t} <= 0;
+      #10 rstn <= 1; t = 0;
+      #8 t = 1;
+      #8 t = 0;
+      #8 t = 1;
+      #8 t = 0;
+      #8 t = 1;
+      #8 t = 0;
+      #4 rstn =0;
+      #8 t = 1;
+      #8 t = 0;
+      #10
+      $finish;
+  end
+  
+endmodule
+
+// Code your design//
+module tff(t,clk,rstn,q,qb);
+  input t,clk,rstn;
+  output reg q;
+  output qb;
+  assign qb = ~q;
+  assign d = q ^ t;
+  dff d0(d,clk,rstn,q,qb);
+endmodule
+
+module dff(input d,clk,rstn, output reg q, output qb);
+  assign qb = ~q;
+  always@(negedge clk)
+    if(!rstn)
+      q<=0;
+  else
+    q<=d;
+endmodule
