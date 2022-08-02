@@ -1,0 +1,44 @@
+module jkff_tb;
+  reg j,k,clk,rst;
+  wire q,qb;
+  jkff jkff1(j,k,clk,rst,q,qb);
+  
+  always #5 clk = ~clk;
+  
+  initial 
+    begin
+      $dumpfile("jkff_tb.vcd");
+      $dumpvars(1,jkff_tb);
+      {clk,rst,j,k} <= 0;
+      #10 rst <= 1; j = 0; k = 0;
+      #8 j = 0; k = 0;
+      #8 j = 0; k = 1;
+      #8 j = 1; k = 0;
+      #8 j = 0; k = 0;
+      #8 j = 1; k = 1;
+      #8 j = 0; k = 0;
+      #8 j = 1; k = 0;
+      #4 rst =0;
+      #10
+      $finish;
+  end
+  
+endmodule
+
+// Code your design//
+module jkff(j,k,clk,rst,q,qb);
+  input j,k,clk,rst;
+  output reg q;
+  output qb;
+  assign qb = ~q;
+  always @(posedge clk,rst)
+    if(!rstn)
+      q <= 0;
+  else
+    case({j,k})
+      2'b00 : q <= q;
+      2'b01 : q <= 0;
+      2'b10 : q <= 1;
+      2'b11 : q <= ~q;
+    endcase
+endmodule
