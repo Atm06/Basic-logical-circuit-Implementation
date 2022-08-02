@@ -1,0 +1,47 @@
+//Test bench//
+module srff_tb;
+  reg s,r,clk,rstn;
+  wire q,qb;
+  srff srff1(s,r,clk,rstn,q,qb);
+  
+  always #5 clk = ~clk;
+  
+  initial 
+    begin
+      $dumpfile("srff_tb.vcd");
+      $dumpvars(1,srff_tb);
+      {clk,rstn,s,r} <= 0;
+      #10 rstn <= 1; s = 0; r = 0;
+      #8 s = 0; r = 0;
+      #8 s = 0; r = 1;
+      #8 s = 1; r = 0;
+      #8 s = 0; r = 0;
+      #8 s = 1; r = 1;
+      #8 s = 0; r = 0;
+      #8 s = 1; r = 0;
+      #4 rstn =0;
+      #10
+      $finish;
+  end
+  
+endmodule
+
+// Code your design//
+module srff(s,r,clk,rstn,q,qb);
+  input s,r,clk,rstn;
+  output reg q;
+  output qb;
+  assign qb = ~q;
+  assign t = s | q;
+  tff t0(t,clk,rstn,q,qb);
+endmodule
+
+module tff(input t,clk,rstn, output reg q, output qb);
+  assign qb = ~q;
+  always@(posedge clk)
+    if(!rstn)
+      q<=0;
+  else
+     if(t)
+      q<=~q;
+endmodule
